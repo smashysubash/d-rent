@@ -1,4 +1,5 @@
 require('@nomicfoundation/hardhat-toolbox');
+require('hardhat-ethernal');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -10,5 +11,8 @@ module.exports = {
     hardhat: {
       chainId: 1337,
     },
+  },
+  ethernal: {
+    apiToken: process.env.ETHERNAL_API_TOKEN,
   },
 };

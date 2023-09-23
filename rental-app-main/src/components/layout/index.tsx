@@ -1,19 +1,20 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from 'react';
 import {
   DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Layout, Menu, theme } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
-import { authService } from "../../services/auth.service";
+} from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Layout, Menu, theme } from 'antd';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { authService } from '../../services/auth.service';
+import MetamaskModal from '../modal';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-type MenuItem = Required<MenuProps>["items"][number];
+type MenuItem = Required<MenuProps>['items'][number];
 
 function getItem(
   label: React.ReactNode,
@@ -30,14 +31,10 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Dashboard", "/dashboard", <DesktopOutlined />),
-  getItem("My Properties", "/properties", <DesktopOutlined />),
-  getItem("Rentals", "/rentals", <UserOutlined />),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
+  getItem('Dashboard', '/dashboard', <DesktopOutlined />),
+  getItem('My Properties', '/properties', <DesktopOutlined />),
+  getItem('Pay Rentals', '/rentals', <UserOutlined />),
+  getItem('Withdraw Funds', '/withdraw', <TeamOutlined />),
 ];
 
 const DefaultLayout: React.FC = ({ children }: { children: ReactNode }) => {
@@ -56,40 +53,39 @@ const DefaultLayout: React.FC = ({ children }: { children: ReactNode }) => {
   };
   const logout = () => {
     authService.logout();
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: '100vh' }}>
+      <MetamaskModal />
       <Sider
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-        theme="light"
+        theme='light'
       >
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img src="/d-rent-logo.png" width="150"></img>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <img src='/d-rent-logo.png' width='150'></img>
         </div>
 
         <Menu
-          theme="light"
-          mode="inline"
+          theme='light'
+          mode='inline'
           items={items}
-          defaultSelectedKeys={["/dashboard"]}
+          defaultSelectedKeys={['/dashboard']}
           selectedKeys={[location.pathname]}
           onClick={handleMenuClick}
         />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button onClick={logout}>Logout</button>
-          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}></div>
         </Header>
-        <Content style={{ padding: "0 16px", background: colorBgContainer }}>
+        <Content style={{ padding: '0 16px', background: colorBgContainer }}>
           {children}
         </Content>
-        <Footer style={{ textAlign: "center", padding: "10px 20px" }}>
+        <Footer style={{ textAlign: 'center', padding: '10px 20px' }}>
           D-RENT ©2023 | Developed by @subash @karthi @anandh
         </Footer>
       </Layout>

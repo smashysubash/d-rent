@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from "react";
-import style from "./style.module.css";
-import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { authService } from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
-import axios, { AxiosError } from "axios";
+import React, { useEffect, useState } from 'react';
+import style from './style.module.css';
+import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { authService } from '../../services/auth.service';
+import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+import axios, { AxiosError } from 'axios';
+import MetamaskModal from '../modal';
+import { useMetaMask } from 'metamask-react';
 
 export const Login = () => {
+  const { status } = useMetaMask();
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  console.log(status);
 
-  useEffect(() => {
-    if (authService.isAuthenticated()) {
-      navigate("/dashboard");
-    }
-  }, []);
+  if (status === 'connected') {
+    navigate('/dashboard');
+  }
 
   const handleSubmit = (event: any) => {
     const form = event.currentTarget;
@@ -32,17 +34,17 @@ export const Login = () => {
   };
 
   const login = async (email: string, password: string) => {
-    const toastId = toast.loading("Logging in...");
+    const toastId = toast.loading('Logging in...');
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post('http://localhost:3000/login', {
         email,
         password,
       });
       if (response.status === 200 || response.status === 201) {
-        toast.success("Log In Successfull", { id: toastId });
+        toast.success('Log In Successfull', { id: toastId });
         const { token } = response.data;
-        localStorage.setItem("token", token);
-        navigate("/dashboard");
+        localStorage.setItem('token', token);
+        navigate('/dashboard');
         return {
           token,
         };
@@ -50,9 +52,9 @@ export const Login = () => {
     } catch (err) {
       if (err instanceof AxiosError) {
         if (!err?.response) {
-          toast.error("No Server Response", { id: toastId });
+          toast.error('No Server Response', { id: toastId });
         } else {
-          toast.error("Invalid credentials", { id: toastId });
+          toast.error('Invalid credentials', { id: toastId });
         }
       }
       return false;
@@ -60,13 +62,13 @@ export const Login = () => {
   };
   return (
     <Container
-      fluid="xs"
+      fluid='xs'
       className={`d-flex align-items-center rounded bg-light border ${style.login}`}
       style={{}}
     >
       <Toaster />
       <div className={`m-3 ${style.logindiv} ${style.magicpattern}`}>
-        <Form
+        {/* <Form
           style={{ zIndex: 2, position: "inherit" }}
           noValidate
           validated={validated}
@@ -131,7 +133,9 @@ export const Login = () => {
               Create new account
             </Link>
           </div>
-        </Form>
+        </Form> */}
+
+        <MetamaskModal />
       </div>
     </Container>
   );

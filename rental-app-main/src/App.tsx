@@ -9,6 +9,7 @@ import { Rentals } from './components/rentals';
 import React from 'react';
 import { Modal } from 'antd';
 import { Toaster } from 'react-hot-toast';
+import WithdrawFunds from './components/withdrawFunds';
 
 function App() {
   return (
@@ -31,19 +32,20 @@ function App() {
           <Route
             path='/properties'
             element={
-              <Protected>
-                <Properties />
-              </Protected>
+              // <Protected>
+              <Properties />
+              // </Protected>
             }
           />
           <Route
             path='/rentals'
             element={
-              <Protected>
-                <Rentals />
-              </Protected>
+              // <Protected>
+              <Rentals />
+              // </Protected>
             }
           />
+          <Route path='/withdraw' element={<WithdrawFunds />} />
         </Routes>
       </BrowserRouter>
     </>
